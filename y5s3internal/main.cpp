@@ -1,7 +1,14 @@
+// uint32_t*	=	4 bytes
+// uintptr_t*	=	8 bytes
+// float*		=	float
+
+
+
 #define WIN_32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <cstdint>
 #include <thread>
+#include "readwrite.h"
 
 namespace offset
 {
@@ -18,21 +25,30 @@ void injected_thread(HMODULE instance) noexcept
 	uintptr_t* pBaseAddress = (uintptr_t*)GetModuleHandleA("RainbowSix.exe");
 
 	while (!GetAsyncKeyState(VK_INSERT))
-	{	
+	{
+		Sleep(1);
+
 		uintptr_t* R6GamerProfileManager = reinterpret_cast<uintptr_t*>((uintptr_t)pBaseAddress + 0x5E32C50);
 		uintptr_t* intermediate1 = reinterpret_cast<uintptr_t*>(*R6GamerProfileManager + 0x88);
 		uintptr_t* intermediate2 = reinterpret_cast<uintptr_t*>(*intermediate1 + 0x0);
 		uintptr_t* intermediate3 = reinterpret_cast<uintptr_t*>(*intermediate2 + 0x30);
 		uintptr_t* intermediate4 = reinterpret_cast<uintptr_t*>(*intermediate3 + 0x21);
 		uintptr_t* intermediate5 = reinterpret_cast<uintptr_t*>(*intermediate4 + 0x70);
-		uintptr_t* ammo_magazine = reinterpret_cast<uintptr_t*>(*intermediate5 + 0x124);
+		uint32_t* ammo_magazine = reinterpret_cast<uint32_t*>(*intermediate5 + 0x124);
 
-		if (!R6GamerProfileManager && !intermediate1 && !intermediate2 && !intermediate3 && !intermediate4 && !intermediate5 && !ammo_magazine)
+		if (!ammo_magazine)
 			continue;
-		*ammo_magazine = 999;
 
-		Sleep(1);
+		__try
+		{
+			*ammo_magazine = 999;
+		}
+		__except(EXCEPTION_EXECUTE_HANDLER)
+		{
+
+		}
 	}
+
 
 	FreeLibraryAndExitThread(instance, 0);
 }
