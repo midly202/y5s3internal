@@ -12,7 +12,6 @@
 #include <Windows.h>
 #include <cstdint>
 #include <thread>
-#include "readwrite.h"
 
 namespace offset
 {
@@ -39,6 +38,8 @@ void injected_thread(HMODULE instance) noexcept
         __try 
         {
             uintptr_t* R6GamerProfileManager = reinterpret_cast<uintptr_t*>((uintptr_t)pBaseAddress + 0x5E32C50);
+            uintptr_t* R6base2 = reinterpret_cast<uintptr_t*>((uintptr_t)pBaseAddress + 0x05E07850);
+            uintptr_t* R6base3 = reinterpret_cast<uintptr_t*>((uintptr_t)pBaseAddress + 0x07EF0EB8);
             uintptr_t* intermediate1 = reinterpret_cast<uintptr_t*>(*R6GamerProfileManager + 0x88);
             uintptr_t* intermediate2 = reinterpret_cast<uintptr_t*>(*intermediate1 + 0x0);
             uintptr_t* intermediate3 = reinterpret_cast<uintptr_t*>(*intermediate2 + 0x30);
@@ -50,17 +51,32 @@ void injected_thread(HMODULE instance) noexcept
             uintptr_t* intermediate9 = reinterpret_cast<uintptr_t*>(*intermediate8 + 0x0);
             uintptr_t* intermediate10 = reinterpret_cast<uintptr_t*>(*intermediate7 + 0x148);
             uintptr_t* intermediate11 = reinterpret_cast<uintptr_t*>(*intermediate10 + 0x0);
+            uintptr_t* intermediate12 = reinterpret_cast<uintptr_t*>(*R6base2 + 0x0);
+            uintptr_t* intermediate13 = reinterpret_cast<uintptr_t*>(*intermediate12 + 0x28);
+            uintptr_t* intermediate14 = reinterpret_cast<uintptr_t*>(*intermediate13 + 0x0);
+            uintptr_t* intermediate15 = reinterpret_cast<uintptr_t*>(*intermediate14 + 0xE0);
+            uintptr_t* intermediate16 = reinterpret_cast<uintptr_t*>(*intermediate15 + 0xA8);
+            uintptr_t* intermediate17 = reinterpret_cast<uintptr_t*>(*intermediate16 + 0x110);
+            uintptr_t* intermediate18 = reinterpret_cast<uintptr_t*>(*R6base3 + 0x10);
 
+            float* player_fov = reinterpret_cast<float*>(*intermediate18 + 0xBB8);
+            float* gun_fov = reinterpret_cast<float*>(*intermediate18 + 0xBBC);
+            byte* gun_firemode = reinterpret_cast<byte*>(*intermediate5 + 0x120);
             uintptr_t* gun_recoil = reinterpret_cast<uintptr_t*>(*intermediate7 + 0x140);
             uint32_t* gun_firerate = reinterpret_cast<uint32_t*>(*intermediate9 + 0x3C);
             uint32_t* gun_ammo = reinterpret_cast<uint32_t*>(*intermediate5 + 0x124);
             uint32_t* gun_damage = reinterpret_cast<uint32_t*>(*intermediate11 + 0x6C);
+            uint32_t* player_speed = reinterpret_cast<uint32_t*>(*intermediate17 + 0x58);
 
 
             *gun_recoil = 0;
             *gun_firerate = 9999;
             *gun_ammo = 1000;
             *gun_damage = 9999;
+            *player_speed = 200;
+            *player_fov = 2.0f;
+            *gun_fov = 2.0f;
+            *gun_firemode = 0;
             std::cout << "dereference succesful     " << count << "\n";
             count++;
         }
