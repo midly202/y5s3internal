@@ -6,10 +6,6 @@
 // get better system for pointers, this is absolutely retarded
 // figure out classes are used for? idk read on UC or something
 
-// to the person reading this on github, no I don't know what I'm doing, this is my first attempt at it, yes it's probably horrible.
-// If you wanna tell me what I'm doing wrong, add me on discord: midly.
-
-
 
 #define WIN_32_LEAN_AND_MEAN
 #include <iostream>
