@@ -1,10 +1,14 @@
-// uint32_t*	=	4 bytes
-// uintptr_t*	=	8 bytes
-// float*		=	float
+// uint32_t*    =	4 bytes
+// uintptr_t*   =	8 bytes
+// float*       =   float
 
 // Localplayer = ([[[R6GPM + 0x88]] + 0x30]) -0x6F
-// rewrite all pointers to one line
-// find the pointer for current weapon held, so it's possible to check if a weapon is held, and only THEN execute recoil / ammo 
+// get better system for pointers, this is absolutely retarded
+// figure out classes are used for? idk read on UC or something
+
+// to the person reading this on github, no I don't know what I'm doing, this is my first attempt at it, yes it's probably horrible.
+// If you wanna tell me what I'm doing wrong, add me on discord: midly.
+
 
 
 #define WIN_32_LEAN_AND_MEAN
@@ -13,28 +17,35 @@
 #include <cstdint>
 #include <thread>
 
+
+// not used atm
 namespace offset
 {
 	constexpr std::ptrdiff_t dwMagazineAmmo = 0x0;
 	constexpr std::ptrdiff_t dwFireRate = 0x0;
 }
 
-// hack fn
+// cheat fn
 void injected_thread(HMODULE instance) noexcept
 {
+    // allocates console and output stream
     AllocConsole();
     FILE* f = new FILE;
     freopen_s(&f, "CONOUT$", "w", stdout);
 
+    // wow look at me using fancy words
     std::cout << "I am the alpha and the omega \n";
 
+    // get base address
     uintptr_t* pBaseAddress = (uintptr_t*)GetModuleHandleA("RainbowSix.exe");
     int count = 1;
 
+    // as long as INS isn't pressed, execute loop
     while (!GetAsyncKeyState(VK_INSERT))
     {
         Sleep(10);
 
+        // everything below if fucking retarded, but I don't know how to make it not retarded.
         __try 
         {
             uintptr_t* R6GamerProfileManager = reinterpret_cast<uintptr_t*>((uintptr_t)pBaseAddress + 0x5E32C50);
@@ -87,6 +98,8 @@ void injected_thread(HMODULE instance) noexcept
             count++;
         }
     }
+    
+    // frees the console and output stream
     fclose(f);
     FreeConsole();
     FreeLibraryAndExitThread(instance, 0);
@@ -106,7 +119,7 @@ int __stdcall DllMain(
 	{
 		DisableThreadLibraryCalls(instance);
 
-		//create hack thread
+		// create cheat thread
 		const auto thread = CreateThread(
 			nullptr,
 			0,
