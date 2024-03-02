@@ -41,7 +41,7 @@ void injected_thread(HMODULE instance) noexcept
     {
         Sleep(10);
 
-        // everything below if fucking retarded, but I don't know how to make it not retarded.
+        // everything below is fucking retarded, but I don't know how to make it not retarded.
         __try 
         {
             uintptr_t* R6GamerProfileManager = reinterpret_cast<uintptr_t*>((uintptr_t)pBaseAddress + 0x5E32C50);
